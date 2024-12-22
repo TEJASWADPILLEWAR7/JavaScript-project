@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Countdown Timer</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #282c34;
+            color: white;
+            font-family: 'Arial', sans-serif;
+        }
+
+        .countdown-container {
+            text-align: center;
+        }
+
+        .timer {
+            font-size: 5rem;
+            margin: 20px 0;
+        }
+
+        .label {
+            font-size: 1.5rem;
+        }
+
+        .input-field {
+            margin: 20px 0;
+        }
+
+        .input-field input {
+            padding: 10px;
+            font-size: 1.5rem;
+        }
+
+        .input-field button {
+            padding: 10px 15px;
+            font-size: 1.5rem;
+            margin-left: 10px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="countdown-container">
+        <h1>Countdown Timer</h1>
+        <div class="input-field">
+            <input type="datetime-local" id="targetTime">
+            <button onclick="setCountdown()">Start Countdown</button>
+        </div>
+        <div class="timer" id="timer">00:00:00</div>
+        <div class="label">Hours : Minutes : Seconds</div>
+    </div>
+
+    <script>
+        let interval;
+
+        function setCountdown() {
+            const targetInput = document.getElementById('targetTime').value;
+            if (!targetInput) return alert('Please select a time.');
+
+            const targetDate = new Date(targetInput).getTime();
+
+            if (interval) clearInterval(interval);
+
+            interval = setInterval(function () {
+                const now = new Date().getTime();
+                const timeLeft = targetDate - now;
+
+                if (timeLeft <= 0) {
+                    clearInterval(interval);
+                    document.getElementById('timer').innerHTML = '00:00:00';
+                    return;
+                }
+
+                const hours = String(Math.floor((timeLeft / (1000 * 60 * 60)) % 24)).padStart(2, '0');
+                const minutes = String(Math.floor((timeLeft / (1000 * 60)) % 60)).padStart(2, '0');
+                const seconds = String(Math.floor((timeLeft / 1000) % 60)).padStart(2, '0');
+
+                document.getElementById('timer').innerHTML = `${hours}:${minutes}:${seconds}`;
+            }, 1000);
+        }
+    </script>
+</body>
+
+</html>
